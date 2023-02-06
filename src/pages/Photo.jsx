@@ -16,7 +16,6 @@ const Photo = () => {
   const [rows, setRows] = useState(photoData);
   const [photoTitle, setPhotoTitle] = useState("");
   const { id } = useParams();
-  const titleRef = useRef();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -29,20 +28,18 @@ const Photo = () => {
       });
   }, []);
 
-  useEffect(() => {
+  const handleChangeTitle = (e) => {
+    e.preventDefault();
+
     fetch(`https://jsonplaceholder.typicode.com/photos/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title: `${photoTitle}` }),
     })
-      .then((response) => response.json())
+      .then((data) => data.json())
       .then((data) => setPhotoTitle(data))
       .catch((err) => console.error(err));
-  }, []);
 
-  const handleChangeTitle = (e) => {
-    e.preventDefault();
-    setPhotoTitle(titleRef.current.value);
     setOpen(false);
   };
 
@@ -104,31 +101,29 @@ const Photo = () => {
           >
             <Typography
               id="modal-modal-title"
-              className="mb-2 text-blue-500 text-2xl"
+              className=" text-blue-500 text-2xl"
               variant="h6"
               component="h2"
             >
               Change title name
             </Typography>
-            <TextField
-              style={{ width: "100%" }}
-              id="outlined-basic"
-              label="Enter new title"
-              variant="outlined"
-              ref={titleRef}
-            />
-            <div className="w-full flex items-center justify-between">
-              <Button onClick={handleClose} variant="primary">
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                // type="submit"
-                onClick={handleChangeTitle}
-              >
-                Submit
-              </Button>
-            </div>
+            <form onSubmit={handleChangeTitle}>
+              <TextField
+                style={{ width: "100%", marginBottom: "10px" }}
+                id="outlined-basic"
+                label="Enter new title"
+                variant="outlined"
+                onChange={(e) => setPhotoTitle(e.target.value)}
+              />
+              <div className="w-full flex items-center justify-between">
+                <Button onClick={handleClose} variant="primary">
+                  Cancel
+                </Button>
+                <Button variant="contained" type="submit">
+                  Submit
+                </Button>
+              </div>
+            </form>
           </Box>
         </Modal>
       </Container>
