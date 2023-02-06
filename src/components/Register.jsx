@@ -11,7 +11,7 @@ const Register = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
   const confirmPasswordRef = useRef();
-  const { signup, googleSignIn, githubSignIn, twitterSignIn } = useAuth();
+  const { signup, googleSignIn } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -149,14 +149,6 @@ const Register = () => {
           <FcGoogle
             className="text-2xl cursor-pointer"
             onClick={handleGoogleSignIn}
-          />
-          <BsGithub
-            onClick={handleGithubSignIn}
-            className="text-2xl cursor-pointer"
-          />
-          <BsTwitter
-            onClick={handleTwitterSignIn}
-            className="text-2xl text-blue-500 cursor-pointer"
           />
         </div>
         <p className="text-gray-600 text-xs mt-10">

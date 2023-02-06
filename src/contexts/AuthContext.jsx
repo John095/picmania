@@ -1,11 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useEffect } from "react";
-import {
-  auth,
-  googleProvider,
-  githubProvider,
-  twitterProvider,
-} from "../firebase-config";
+import { auth, googleProvider } from "../firebase-config";
 
 const AuthContext = React.createContext();
 
@@ -45,14 +40,6 @@ export function AuthProvider({ children }) {
     return auth.signInWithPopup(googleProvider);
   };
 
-  const githubSignIn = () => {
-    return auth.signInWithPopup(githubProvider);
-  };
-
-  const twitterSignIn = () => {
-    return auth.signInWithPopup(twitterProvider);
-  };
-
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
@@ -71,8 +58,6 @@ export function AuthProvider({ children }) {
     updateEmail,
     updatePassword,
     googleSignIn,
-    githubSignIn,
-    twitterSignIn,
   };
 
   return (
