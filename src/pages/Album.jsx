@@ -5,7 +5,7 @@ import DashboardNav from "../components/DashboardNav";
 import { useParams, Link } from "react-router-dom";
 
 const Album = () => {
-  const [tableData, setTableData] = useState([]);
+  const [tableData, setTableData] = useState({});
   const [rows, setRows] = useState(tableData);
   const [photos, setPhotos] = useState([]);
   const [photo, setPhoto] = useState({});

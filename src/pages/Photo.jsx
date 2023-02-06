@@ -1,23 +1,50 @@
-import { Box, Button, Container, Typography } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Button,
+  Container,
+  Modal,
+  TextField,
+  Typography,
+} from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import DashboardNav from "../components/DashboardNav";
 
 const Photo = () => {
-  const [photoData, setPhotoData] = useState([]);
-  const [rows, setRows] = useState(photoData);
+  const [photoData, setPhotoData] = useState({});
   const [photo, setPhoto] = useState({});
-  const [photoName, setPhotoName] = useState({});
+  const [rows, setRows] = useState(photoData);
+  const [photoTitle, setPhotoTitle] = useState("");
   const { id } = useParams();
+  const titleRef = useRef();
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   useEffect(() => {
     fetch(`https://jsonplaceholder.typicode.com/photos/${id}`)
       .then((data) => data.json())
       .then((data) => {
         setPhotoData(data);
-        // setPhoto(data);
       });
   }, []);
+
+  useEffect(() => {
+    fetch(`https://jsonplaceholder.typicode.com/photos/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title: `${photoTitle}` }),
+    })
+      .then((response) => response.json())
+      .then((data) => setPhotoTitle(data))
+      .catch((err) => console.error(err));
+  }, []);
+
+  const handleChangeTitle = (e) => {
+    e.preventDefault();
+    setPhotoTitle(titleRef.current.value);
+    setOpen(false);
+  };
 
   return (
     <>
@@ -53,7 +80,57 @@ const Photo = () => {
           <img src={photoData.url} alt="" />
           <Typography>{photoData.title}</Typography>
         </Box>
-        <Button>Edit Photo Title</Button>
+        <Button onClick={handleOpen}>Edit Photo Title</Button>
+        {/* modal */}
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box
+            className="flex flex-col items-center justify-center gap-4"
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 400,
+              backgroundColor: "#fff",
+              border: "2px solid #000",
+              boxShadow: 24,
+              p: 4,
+            }}
+          >
+            <Typography
+              id="modal-modal-title"
+              className="mb-2 text-blue-500 text-2xl"
+              variant="h6"
+              component="h2"
+            >
+              Change title name
+            </Typography>
+            <TextField
+              style={{ width: "100%" }}
+              id="outlined-basic"
+              label="Enter new title"
+              variant="outlined"
+              ref={titleRef}
+            />
+            <div className="w-full flex items-center justify-between">
+              <Button onClick={handleClose} variant="primary">
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                // type="submit"
+                onClick={handleChangeTitle}
+              >
+                Submit
+              </Button>
+            </div>
+          </Box>
+        </Modal>
       </Container>
     </>
   );
