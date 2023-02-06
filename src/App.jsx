@@ -10,6 +10,7 @@ import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import UserPage from "./pages/UserPage";
 import Album from "./pages/Album";
+import Photo from "./pages/Photo";
 
 function App() {
   return (
@@ -22,7 +23,10 @@ function App() {
                 <Route index element={<Dashboard />} />
                 <Route exact path="user/:id">
                   <Route index element={<UserPage />} />
-                  <Route path="album/:id" element={<Album />} />
+                  <Route exact path="album/:id">
+                    <Route index element={<Album />} />
+                    <Route exact path="photo/:id" element={<Photo />} />
+                  </Route>
                 </Route>
               </Route>
             </Route>

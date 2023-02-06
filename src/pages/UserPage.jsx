@@ -54,7 +54,7 @@ const UserPage = () => {
           variant="h4"
           sx={{ textAlign: "center", paddingBottom: "10px" }}
         >
-          {user.name}
+          {user.name}album
         </Typography>
         <Box
           sx={{

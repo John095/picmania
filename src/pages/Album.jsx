@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { DataGrid } from "@mui/x-data-grid";
 import { Box, Button, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import DashboardNav from "../components/DashboardNav";
@@ -9,7 +8,9 @@ const Album = () => {
   const [tableData, setTableData] = useState([]);
   const [rows, setRows] = useState(tableData);
   const [photos, setPhotos] = useState([]);
+  const [photo, setPhoto] = useState({});
   const [album, setAlbum] = useState({});
+  const [user, setUser] = useState({});
   const { id } = useParams();
 
   useEffect(() => {
@@ -23,6 +24,7 @@ const Album = () => {
       .then((data) => {
         setPhotos(data);
         setAlbum(data);
+        setPhoto(data);
       });
   }, []);
 
@@ -77,8 +79,13 @@ const Album = () => {
             {photos.map((photo) => {
               return (
                 <Box sx={{ width: "200px" }} key={photo.id}>
-                  <img src={photo.url} alt="" />
-                  <Typography variant="p">{photo.title}</Typography>
+                  <Link
+                    to={`/dashboard/user/${user.id}/album/${album.id}/photo/${photo.id}`}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <img src={photo.url} alt="" />
+                    <Typography variant="p">{photo.title}</Typography>
+                  </Link>
                 </Box>
               );
             })}
