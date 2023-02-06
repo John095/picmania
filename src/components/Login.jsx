@@ -10,8 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const { login, currentUser, googleSignIn, githubSignIn, twitterSignIn } =
-    useAuth();
+  const { login, currentUser, googleSignIn } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -38,36 +37,6 @@ const Login = () => {
       setError("");
       setLoading(true);
       await googleSignIn();
-      navigate("/dashboard");
-    } catch (error) {
-      setError("Failed to log in!");
-    }
-    setLoading(false);
-    console.log(currentUser);
-  };
-
-  const handleGithubSignIn = async (e) => {
-    e.preventDefault();
-
-    try {
-      setError("");
-      setLoading(true);
-      await githubSignIn();
-      navigate("/dashboard");
-    } catch (error) {
-      setError("Failed to log in!");
-    }
-    setLoading(false);
-    console.log(currentUser);
-  };
-
-  const handleTwitterSignIn = async (e) => {
-    e.preventDefault();
-
-    try {
-      setError("");
-      setLoading(true);
-      await twitterSignIn();
       navigate("/dashboard");
     } catch (error) {
       setError("Failed to log in!");
@@ -134,14 +103,6 @@ const Login = () => {
           <FcGoogle
             className="text-2xl cursor-pointer"
             onClick={handleGoogleSignIn}
-          />
-          <BsGithub
-            onClick={handleGithubSignIn}
-            className="text-2xl cursor-pointer"
-          />
-          <BsTwitter
-            onClick={handleTwitterSignIn}
-            className="text-2xl text-blue-500 cursor-pointer"
           />
         </div>
         <p className="text-gray-600 text-xs mt-10">
